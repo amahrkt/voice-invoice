@@ -19,3 +19,58 @@ model Post {
   content   String
   createdAt DateTime @default(now())
 }
+
+// ── Voice-to-Invoice Models ──────────────────────────────────────────────────
+
+model Product {
+  id           String        @id @default(cuid())
+  nama         String
+  namaNormal   String        // lowercase, stripped for fuzzy index
+  harga        Int           // in Rupiah, integer
+  stok         Int           @default(0)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  invoiceItems InvoiceItem[]
+
+  @@index([namaNormal])
+}
+
+model Invoice {
+  id               String        @id @default(cuid())
+  nomorInvoice     String        @unique
+  tanggalWaktu     DateTime
+  transcript       String
+  totalKeseluruhan Int
+  sessionId        String
+  createdAt        DateTime      @default(now())
+  items            InvoiceItem[]
+
+  @@index([tanggalWaktu])
+  @@index([nomorInvoice])
+}
+
+model InvoiceItem {
+  id          String     @id @default(cuid())
+  invoice     Invoice    @relation(fields: [invoiceId], references: [id])
+  invoiceId   String
+  product     Product?   @relation(fields: [productId], references: [id])
+  productId   String?
+  namaBarang  String     // stored even if product not found
+  kuantitas   Int
+  hargaSatuan Int        // 0 if NOT_FOUND
+  subtotal    Int        // 0 if NOT_FOUND
+  status      ItemStatus
+
+  @@index([invoiceId])
+}
+
+enum ItemStatus {
+  OK
+  NOT_FOUND
+  AMBIGUOUS
+}
+
+model InvoiceCounter {
+  date    String @id // "YYYYMMDD" WIB
+  counter Int    @default(0)
+}

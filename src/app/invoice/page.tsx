@@ -118,7 +118,6 @@ export default function InvoicePage() {
 
   const { invoice, transcript, error } = session;
   const hasInvoice = invoice !== null;
-  const isRetryable = error?.code === "STT_SERVICE_UNAVAILABLE";
 
   // ── Render ────────────────────────────────────────────────────────────────
 
@@ -145,21 +144,18 @@ export default function InvoicePage() {
           <div className="no-print">
             <ErrorBanner
               error={error}
-              onRetry={isRetryable ? undefined : undefined}
               onDismiss={handleDismissError}
             />
           </div>
         )}
 
-        {/* ── InvoiceTable — shown when invoice is available (null shows skeleton) ── */}
-        {hasInvoice && (
-          <InvoiceTable
-            invoice={invoice}
-            transcript={transcript}
-            onEditLine={handleEditLine}
-            onDeleteLine={handleDeleteLine}
-          />
-        )}
+        {/* ── InvoiceTable — always rendered; null invoice shows skeleton (Req 6.7) ── */}
+        <InvoiceTable
+          invoice={invoice}
+          transcript={transcript}
+          onEditLine={handleEditLine}
+          onDeleteLine={handleDeleteLine}
+        />
 
         {/* ── PrintHandler — shown only when invoice is not null ── */}
         {hasInvoice && (

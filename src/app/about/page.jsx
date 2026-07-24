@@ -17,7 +17,7 @@ function page() {
         First Out) untuk menjaga kualitas perputaran barang Anda, laporan
         keuangan terpadu untuk memantau arus kas secara real-time, serta fitur
         terbaru berupa pencetakan label harga super cepat yang dirancang khusus
-        untuk memangkas waktu kerja Anda.
+        untuk memangkas waktu kerja Anda. (Edited PC Enth)
       </p>
     </>
   );

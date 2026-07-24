@@ -1,8 +1,7 @@
 import React from 'react';
 
-// Komponen Logo Kustom VocaStruk
-// Perpaduan Ikon Cari, Mic Voice, dan Struk Kertas
-const VocaStrukLogo = ({ size = 24, className = "" }) => {
+// Komponen Ikon Aplikasi VocaStruk (Modern, Flat Vector, AI Voice Invoice)
+const VocaStrukLogo = ({ size = 48, className = "" }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -10,28 +9,54 @@ const VocaStrukLogo = ({ size = 24, className = "" }) => {
       height={size}
       viewBox="0 0 24 24"
       fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
       className={className}
     >
-      {/* 1. Ikon Pencarian - Lingkaran Utama */}
-      <circle cx="10" cy="10" r="7" />
-      {/* Gagang Pencarian yang dimodifikasi */}
-      <line x1="21" y1="21" x2="15" y2="15" />
+      <defs>
+        {/* Gradasi warna latar belakang ikon (Biru ke Cyan) */}
+        <linearGradient id="appIconGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#1D4ED8" /> {/* Blue-700 */}
+          <stop offset="100%" stopColor="#06B6D4" /> {/* Cyan-500 */}
+        </linearGradient>
+      </defs>
 
-      {/* 2. Mikrofon (Mic) - Bagian Kapsul di dalam lingkaran */}
-      <path d="M8.5 7.5a1.5 1.5 0 0 1 3 0v2a1.5 1.5 0 0 1-3 0v-2z" />
-      {/* Bagian Bawah Mic */}
-      <path d="M7 10a3 3 0 0 0 6 0" />
-      {/* Stand Mic kecil */}
-      <line x1="10" x2="10" y1="13" y2="15" />
+      {/* 1. Latar Belakang Aplikasi (Rounded Rectangle) */}
+      <rect width="24" height="24" rx="5.5" fill="url(#appIconGrad)" />
 
-      {/* 3. Struk (Receipt) - Terlihat menyatu dengan gagang pencarian di bawah */}
-      <path d="M15 15h3v5l-1.5-1.5L15 20v-5z" />
-      {/* Garis-garis tulisan kecil di struk */}
-      <path d="M10 17h5" />
+      {/* 2. Sirkuit AI (Tampil halus/subtle di latar belakang) */}
+      <path d="M2 11h2.5l2-2" stroke="#ffffff" strokeOpacity="0.4" strokeWidth="0.75" strokeLinecap="round" strokeLinejoin="round" />
+      <circle cx="6.5" cy="9" r="0.75" fill="#ffffff" fillOpacity="0.6" />
+      
+      <path d="M22 15h-2.5l-2 2" stroke="#ffffff" strokeOpacity="0.4" strokeWidth="0.75" strokeLinecap="round" strokeLinejoin="round" />
+      <circle cx="17.5" cy="17" r="0.75" fill="#ffffff" fillOpacity="0.6" />
+
+      {/* 3. Kertas Faktur / Invoice (Putih solid di tengah) */}
+      <path 
+        d="M7.5 4h6.5l4 4v11a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 6 19.5v-14A1.5 1.5 0 0 1 7.5 4z" 
+        fill="#ffffff" 
+        style={{ filter: "drop-shadow(0px 2px 3px rgba(0,0,0,0.2))" }}
+      />
+      {/* Lipatan ujung kertas faktur di pojok kanan atas */}
+      <path d="M14 4v4h4" fill="#E2E8F0" />
+      {/* Garis teks samar di atas faktur */}
+      <line x1="8.5" y1="6.5" x2="11.5" y2="6.5" stroke="#CBD5E1" strokeWidth="1" strokeLinecap="round" />
+
+      {/* 4. Mikrofon (Bertumpuk di atas kertas faktur) */}
+      {/* Kapsul Mic */}
+      <rect x="10.5" y="9.5" width="3" height="4.5" rx="1.5" fill="#2563EB" /> {/* Blue-600 */}
+      {/* Gagang/U-Bracket Mic */}
+      <path 
+        d="M8.5 12v.5a3.5 3.5 0 0 0 7 0V12" 
+        stroke="#0891B2" /* Cyan-600 */
+        strokeWidth="1.25" 
+        strokeLinecap="round" 
+      />
+      {/* Tiang & Alas Mic */}
+      <path 
+        d="M12 16v2M10 18h4" 
+        stroke="#0891B2" 
+        strokeWidth="1.25" 
+        strokeLinecap="round" 
+      />
     </svg>
   );
 };

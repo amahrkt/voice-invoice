@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { Store } from "lucide-react";
+// 1. Hapus impor Store dari lucide-react dan ganti dengan logo buatan kita
+import VocaStrukLogo from "./VocaStrukLogo";
 
 function Header() {
   return (
@@ -8,7 +9,8 @@ function Header() {
         <nav>
           <div className="logo flex items-center gap-2 p-4">
             <Link href="/">
-              <Store className="w-8 h-8 text-white" />
+              {/* 2. Gunakan VocaStrukLogo dengan ukuran 32px (setara w-8 h-8) dan warna putih */}
+              <VocaStrukLogo size={52} className="text-white" />
             </Link>
           </div>
           <div className="nav-links">

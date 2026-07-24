@@ -2,12 +2,15 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Mic, Package, History, BarChart2 } from 'lucide-react';
+// 1. Tambahkan ikon Printer dari lucide-react di sini
+import { Mic, Package, History, BarChart2, Printer } from 'lucide-react';
 
+// 2. Sisipkan menu Print di dalam array TABS
 const TABS = [
-  { href: '/invoice',   label: 'Record',    Icon: Mic      },
-  { href: '/products',  label: 'Products',  Icon: Package  },
-  { href: '/history',   label: 'History',   Icon: History  },
+  { href: '/invoice',   label: 'Record',    Icon: Mic       },
+  { href: '/print',     label: 'Print',     Icon: Printer   }, // <-- Ini menu barumu
+  { href: '/products',  label: 'Products',  Icon: Package   },
+  { href: '/history',   label: 'History',   Icon: History   },
   { href: '/analytics', label: 'Analytics', Icon: BarChart2 },
 ] as const;
 

@@ -69,7 +69,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     // Validate input
     const inputResult = ParseRequestSchema.safeParse(body);
     if (!inputResult.success) {
-      const message = inputResult.error.errors
+      const message = inputResult.error.issues
         .map((e) => `${e.path.join(".")}: ${e.message}`)
         .join("; ");
       const err: AppError = {

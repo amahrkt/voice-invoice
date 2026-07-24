@@ -81,7 +81,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     // Validate input
     const inputResult = InvoiceRequestSchema.safeParse(body);
     if (!inputResult.success) {
-      const message = (inputResult.error.issues ?? inputResult.error.errors ?? [])
+      const message = (inputResult.error.issues ?? [])
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         .map((e: any) => `${(e.path ?? []).join(".")}: ${e.message}`)
         .join("; ");
@@ -168,7 +168,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
             tanggalWaktu: txDate,
             transcript,
             totalKeseluruhan: response.totalKeseluruhan,
-            sessionId,
+            sessionId: sessionId ?? '',
           },
         });
 

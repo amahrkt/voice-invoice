@@ -223,7 +223,7 @@ each module they validate.
     - Hold `InvoiceSession` state: `{ transcript, parsedItems, invoice, sessionId, error }`
     - Pass `onInvoiceReady` callback to `VoiceRecorder`; pass `onEditLine`/`onDeleteLine` to
       `InvoiceTable`
-    - Apply `recalculate()` synchronously whenever a line is edited
+    - Apply `recalculate()` synchronously whenever a line is editede
     - Never clear session state on error — only reset on explicit "Transaksi Baru" click
     - _Requirements: 6.1, 6.7, 10.1, 10.2, 10.5_
 

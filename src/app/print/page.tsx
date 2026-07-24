@@ -46,7 +46,7 @@ export default function PrintPage() {
           {/* Kop Surat / Header Faktur */}
           <div className="flex flex-col sm:flex-row justify-between items-start border-b border-gray-200 pb-6 mb-6 gap-4">
             <div>
-              <h2 className="text-3xl font-black text-gray-900 tracking-tight">TOKO-MU</h2>
+              <h2 className="text-3xl font-black text-gray-900 tracking-tight">VocaStruk</h2>
               <p className="text-sm text-gray-500 mt-2">
                 Jl. Perdagangan No. 123<br />
                 Bekasi, Jawa Barat

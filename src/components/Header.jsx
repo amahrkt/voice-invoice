@@ -5,21 +5,25 @@ function Header() {
   return (
     <div>
       <header className="header">
-        <nav>
-          <div className="logo flex items-center gap-2 p-4">
-            <Link href="/" className="flex items-center gap-3">
-              {/* Logo aplikasi modern dengan ukuran 42px */}
-              <VocaStrukLogo size={42} />
-              {/* Nama aplikasi */}
-              <span className="font-bold text-white text-xl tracking-wide">
-                Voice-to-Invoice
+        <nav className="flex items-center justify-between w-full px-4">
+          {/* Logo Container */}
+          <div className="logo py-2">
+            <Link href="/" className="flex flex-col items-center justify-center">
+              {/* Logo dari sketsa tangan - Ukuran disesuaikan agar pas ditumpuk */}
+              <VocaStrukLogo size={30} className="text-white" />
+              
+              {/* Teks Brand di bawah logo */}
+              <span className="font-black text-white text-[10px] tracking-[0.2em] uppercase mt-1 leading-none">
+                VocaStruk
               </span>
             </Link>
           </div>
-          <div className="nav-links">
-            <Link href="/">Home</Link>
-            <Link href="/about">About</Link>
-            <Link href="/settings">Settings</Link>
+
+          {/* Menu Links */}
+          <div className="nav-links flex gap-6">
+            <Link href="/" className="text-white hover:text-gray-300 transition-colors">Home</Link>
+            <Link href="/about" className="text-white hover:text-gray-300 transition-colors">About</Link>
+            <Link href="/settings" className="text-white hover:text-gray-300 transition-colors">Settings</Link>
           </div>
         </nav>
       </header>

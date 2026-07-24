@@ -6,6 +6,7 @@ const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined;
 };
 
+// Kembalikan ke {} as any untuk membungkam paksaan TypeScript
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const prisma = globalForPrisma.prisma ?? new PrismaClient({} as any);
 

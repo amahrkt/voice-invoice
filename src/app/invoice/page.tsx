@@ -19,7 +19,7 @@ import type { AppError, InvoiceResponse, ItemLine } from "@/types/invoice";
 
 // ── Constants ─────────────────────────────────────────────────────────────────
 
-const STORE_NAME = "Record nama barang yang ingin ada pesan";
+const STORE_NAME = "Record nama barang yang ingin anda pesan";
 
 // ── Session state ─────────────────────────────────────────────────────────────
 

@@ -31,11 +31,18 @@ export default function PrintPage() {
             <h1 className="text-2xl font-bold text-gray-900">Pratinjau Faktur</h1>
             <p className="text-sm text-gray-500">Cetak faktur transaksi terakhir</p>
           </div>
+          
+          {/* TOMBOL CETAK FAKTUR RESPONSIVE */}
           <button
             onClick={handlePrint}
-            className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-lg font-medium transition-all shadow-sm active:scale-95"
+            className="flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white transition-all shadow-sm active:scale-95 whitespace-nowrap
+              /* Ukuran HP (Default) - Dibuat kecil dan padat */
+              gap-1.5 px-3 py-1.5 text-[11px] font-semibold rounded-lg
+              /* Ukuran Komputer/Laptop (md ke atas) - Kembali ke ukuran normal */
+              md:gap-2 md:px-5 md:py-2.5 md:text-sm md:font-medium md:rounded-xl"
           >
-            <Printer size={18} />
+            {/* Ikon printer ikut menyesuaikan ukuran */}
+            <Printer className="w-3.5 h-3.5 md:w-[18px] md:h-[18px]" />
             <span>Cetak Faktur</span>
           </button>
         </div>

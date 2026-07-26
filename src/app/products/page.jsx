@@ -13,43 +13,28 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { formatCurrency } from "@/lib/formatCurrency";
-import type { ProductListItem } from "@/types/products";
-
-// ── Form state & errors types ─────────────────────────────────────────────────
-
-interface FormValues {
-  nama: string;
-  harga: string;
-  stok: string;
-}
-
-interface FormErrors {
-  nama?: string;
-  harga?: string;
-  stok?: string;
-}
 
 // ── Component ─────────────────────────────────────────────────────────────────
 
 export default function ProductsPage() {
-  const [products, setProducts] = useState<ProductListItem[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
-  const [modalMode, setModalMode] = useState<"add" | "edit" | null>(null);
-  const [selectedProduct, setSelectedProduct] = useState<ProductListItem | null>(null);
-  const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [modalMode, setModalMode] = useState(null);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [deleteConfirm, setDeleteConfirm] = useState(null);
 
   // ── Modal form state ──────────────────────────────────────────────────────
 
-  const [formValues, setFormValues] = useState<FormValues>({ nama: "", harga: "", stok: "" });
-  const [formErrors, setFormErrors] = useState<FormErrors>({});
-  const [submitting, setSubmitting] = useState<boolean>(false);
-  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [formValues, setFormValues] = useState({ nama: "", harga: "", stok: "" });
+  const [formErrors, setFormErrors] = useState({});
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState(null);
 
   // ── Delete confirmation state ─────────────────────────────────────────────
 
-  const [deleteLoading, setDeleteLoading] = useState<boolean>(false);
-  const [deleteError, setDeleteError] = useState<string | null>(null);
+  const [deleteLoading, setDeleteLoading] = useState(false);
+  const [deleteError, setDeleteError] = useState(null);
 
   // ── Fetch products list on mount ──────────────────────────────────────────
 
@@ -60,16 +45,12 @@ export default function ProductsPage() {
       const res = await fetch("/api/products");
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
-        throw new Error(
-          (data as { error?: string }).error ?? `HTTP ${res.status}`
-        );
+        throw new Error(data.error || `HTTP ${res.status}`);
       }
-      const data: ProductListItem[] = await res.json();
+      const data = await res.json();
       setProducts(data);
-    } catch (err: unknown) {
-      setError(
-        err instanceof Error ? err.message : "Gagal memuat daftar produk."
-      );
+    } catch (err) {
+      setError(err.message || "Gagal memuat daftar produk.");
     } finally {
       setLoading(false);
     }
@@ -89,7 +70,7 @@ export default function ProductsPage() {
     setModalMode("add");
   };
 
-  const handleEditClick = (product: ProductListItem) => {
+  const handleEditClick = (product) => {
     setSelectedProduct(product);
     setFormValues({
       nama: product.nama,
@@ -101,7 +82,7 @@ export default function ProductsPage() {
     setModalMode("edit");
   };
 
-  const handleDeleteClick = (id: string) => {
+  const handleDeleteClick = (id) => {
     setDeleteError(null);
     setDeleteConfirm(id);
   };
@@ -120,12 +101,12 @@ export default function ProductsPage() {
       const res = await fetch(`/api/products/${deleteConfirm}`, { method: "DELETE" });
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
-        throw new Error((data as { error?: string }).error ?? `HTTP ${res.status}`);
+        throw new Error(data.error || `HTTP ${res.status}`);
       }
       setDeleteConfirm(null);
       await fetchProducts();
-    } catch (err: unknown) {
-      setDeleteError(err instanceof Error ? err.message : "Gagal menghapus produk.");
+    } catch (err) {
+      setDeleteError(err.message || "Gagal menghapus produk.");
     } finally {
       setDeleteLoading(false);
     }
@@ -141,8 +122,8 @@ export default function ProductsPage() {
 
   // ── Client-side validation ────────────────────────────────────────────────
 
-  const validateForm = (): boolean => {
-    const errors: FormErrors = {};
+  const validateForm = () => {
+    const errors = {};
 
     if (formValues.nama.trim() === "") {
       errors.nama = "Nama tidak boleh kosong";
@@ -164,7 +145,7 @@ export default function ProductsPage() {
 
   // ── Form submit ───────────────────────────────────────────────────────────
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setSubmitError(null);
 
@@ -178,7 +159,7 @@ export default function ProductsPage() {
 
     setSubmitting(true);
     try {
-      let res: Response;
+      let res;
       if (modalMode === "add") {
         res = await fetch("/api/products", {
           method: "POST",
@@ -186,8 +167,8 @@ export default function ProductsPage() {
           body: JSON.stringify(payload),
         });
       } else {
-        // edit mode — selectedProduct must exist
-        res = await fetch(`/api/products/${selectedProduct!.id}`, {
+        // edit mode
+        res = await fetch(`/api/products/${selectedProduct.id}`, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload),
@@ -196,18 +177,14 @@ export default function ProductsPage() {
 
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
-        throw new Error(
-          (data as { error?: string }).error ?? `HTTP ${res.status}`
-        );
+        throw new Error(data.error || `HTTP ${res.status}`);
       }
 
       // Success: close modal and refresh list
       handleCloseModal();
       await fetchProducts();
-    } catch (err: unknown) {
-      setSubmitError(
-        err instanceof Error ? err.message : "Terjadi kesalahan. Coba lagi."
-      );
+    } catch (err) {
+      setSubmitError(err.message || "Terjadi kesalahan. Coba lagi.");
     } finally {
       setSubmitting(false);
     }
@@ -219,21 +196,28 @@ export default function ProductsPage() {
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <div className="mx-auto w-full max-w-4xl px-4 py-8">
 
-        {/* ── Page header ── */}
+{/* ── Page header ── */}
         <div className="flex items-center justify-between mb-6">
           <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
             Produk
           </h1>
+          
+          {/* TOMBOL TAMBAH PRODUK YANG SUDAH DIPERKECIL KHUSUS LAYAR HP */}
           <button
             type="button"
             onClick={handleAddClick}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 active:scale-95 text-white text-sm font-medium transition-all shadow-sm"
+            className="inline-flex items-center justify-center rounded-lg bg-blue-600 hover:bg-blue-700 active:scale-95 text-white font-semibold transition-all shadow-sm whitespace-nowrap
+              /* Ukuran HP (Default) - Dibuat super ramping dan padat */
+              px-2 py-1 text-[11px] gap-1
+              
+              /* Ukuran Komputer/Laptop (md ke atas) - Kembali normal tanpa pengaruh */
+              md:gap-2 md:px-4 md:py-2 md:text-sm md:font-medium md:rounded-xl md:shadow-md"
             aria-label="Tambah produk baru"
           >
-            + Tambah Produk
+            <span>+ Tambah Produk</span>
           </button>
         </div>
-
+        
         {/* ── Loading spinner ── */}
         {loading && (
           <div

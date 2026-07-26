@@ -348,6 +348,20 @@ export default function VoiceRecorder({ onInvoiceReady, onError }: VoiceRecorder
     setElapsedSeconds(0);
   }, []);
 
+  // ── Reset then immediately start recording (used by "Rekam Ulang" button) ─
+
+  const handleResetAndRecord = useCallback(() => {
+    setRecorderState("idle");
+    setErrorMessage(null);
+    setIsSttUnavailable(false);
+    setRetainedBlob(null);
+    setRetainedSessionId(null);
+    setIsTooShortWarning(false);
+    setElapsedSeconds(0);
+    // Start recording after state reset (next microtask)
+    setTimeout(() => handleStartRecording(), 0);
+  }, [handleStartRecording]);
+
   // ── Derived values ────────────────────────────────────────────────────────
 
   const countdown = MAX_RECORDING_SECONDS - elapsedSeconds;
@@ -406,7 +420,7 @@ export default function VoiceRecorder({ onInvoiceReady, onError }: VoiceRecorder
             type="button"
             onClick={
               recorderState === "error" && !isSttUnavailable
-                ? handleReset
+                ? handleResetAndRecord
                 : handleStartRecording
             }
             className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-indigo-600 text-white font-medium text-sm hover:bg-indigo-700 active:scale-95 transition-all disabled:opacity-50"

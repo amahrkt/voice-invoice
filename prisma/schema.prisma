@@ -1,23 +1,13 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Get a free hosted Postgres database in seconds: `npx create-db`
+// ── Konfigurasi Prisma ──────────────────────────────────────────────────────
 
 generator client {
-  provider = "prisma-client"
-  output   = "../src/generated/prisma"
+  provider = "prisma-client-js"
+  // Output custom dihapus agar menggunakan default Next.js (node_modules/.prisma/client)
+  // Ini mencegah error "module not found" saat di-deploy nanti.
 }
 
 datasource db {
   provider = "postgresql"
-}
-
-// Contoh membuat tabel (Model) untuk Post Toko Anda
-model Post {
-  id        Int      @id @default(autoincrement())
-  title     String
-  content   String
-  createdAt DateTime @default(now())
 }
 
 // ── Voice-to-Invoice Models ──────────────────────────────────────────────────
@@ -26,7 +16,7 @@ model Product {
   id           String        @id @default(cuid())
   nama         String
   namaNormal   String        // lowercase, stripped for fuzzy index
-  harga        Int           // in Rupiah, integer
+  harga        Int           // dalam Rupiah, integer (tanpa desimal)
   stok         Int           @default(0)
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
@@ -38,8 +28,8 @@ model Product {
 model Invoice {
   id               String        @id @default(cuid())
   nomorInvoice     String        @unique
-  tanggalWaktu     DateTime
-  transcript       String
+  tanggalWaktu     DateTime      @default(now()) // Diberi default now() agar otomatis
+  transcript       String        @db.Text // Menggunakan Text agar bisa menampung string panjang
   totalKeseluruhan Int
   sessionId        String
   createdAt        DateTime      @default(now())
@@ -51,14 +41,15 @@ model Invoice {
 
 model InvoiceItem {
   id          String     @id @default(cuid())
-  invoice     Invoice    @relation(fields: [invoiceId], references: [id])
+  // Ditambahkan onDelete: Cascade -> Jika Invoice dihapus, item di dalamnya otomatis terhapus
+  invoice     Invoice    @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
   invoiceId   String
   product     Product?   @relation(fields: [productId], references: [id])
   productId   String?
-  namaBarang  String     // stored even if product not found
+  namaBarang  String     // disimpan meskipun produk tidak ditemukan (NOT_FOUND)
   kuantitas   Int
-  hargaSatuan Int        // 0 if NOT_FOUND
-  subtotal    Int        // 0 if NOT_FOUND
+  hargaSatuan Int        // 0 jika NOT_FOUND
+  subtotal    Int        // 0 jika NOT_FOUND
   status      ItemStatus
 
   @@index([invoiceId])
@@ -71,6 +62,6 @@ enum ItemStatus {
 }
 
 model InvoiceCounter {
-  date    String @id // "YYYYMMDD" WIB
+  date    String @id // Format: "YYYYMMDD" WIB
   counter Int    @default(0)
 }

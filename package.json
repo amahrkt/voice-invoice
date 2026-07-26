@@ -9,10 +9,12 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@prisma/adapter-pg": "^7.9.0",
     "@prisma/client": "^7.8.0",
     "lucide-react": "^1.17.0",
     "next": "15.5.19",
     "openai": "^6.48.0",
+    "pg": "^8.22.0",
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "recharts": "^3.10.0",
@@ -22,6 +24,7 @@
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
+    "@types/pg": "^8.20.0",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@vitejs/plugin-react": "^6.0.3",
@@ -33,5 +36,8 @@
     "tailwindcss": "^4",
     "typescript": "^5",
     "vitest": "^4.1.10"
+  },
+  "prisma": {
+    "seed": "npx tsx prisma/seed.ts"
   }
 }
